@@ -13,8 +13,12 @@ services:
       apt-get update && apt-get install -y google-chrome-stable
     startCommand: python main.py
     envVars:
+      - key: BOT_MODE
+        value: LIVE
       - key: STREAM_URL
         value: https://www.youtube.com/watch?v=YOUR_STREAM_ID
+      - key: VIDEO_URLS
+        value: https://www.youtube.com/watch?v=VIDEO1,https://www.youtube.com/watch?v=VIDEO2
       - key: VIEWER_COUNT
         value: 3
       - key: MAX_DURATION_MINUTES
