@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: youtube-viewer-bot
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      # Install Chrome dependencies for Render
+      apt-get update && apt-get install -y wget gnupg
+      wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
+      echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
+      apt-get update && apt-get install -y google-chrome-stable
+    startCommand: python main.py
+    envVars:
+      - key: STREAM_URL
+        value: https://www.youtube.com/watch?v=YOUR_STREAM_ID
+      - key: VIEWER_COUNT
+        value: 3
+      - key: MAX_DURATION_MINUTES
+        value: 0
+      - key: RESTART_INTERVAL_HOURS
+        value: 4
+      - key: PYTHONUNBUFFERED
+        value: 1
+      - key: DISPLAY
+        value: ":99"

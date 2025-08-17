@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  youtube-viewer-bot:
+    build: .
+    container_name: youtube-viewer-bot
+    restart: unless-stopped
+    environment:
+      - STREAM_URL=https://www.youtube.com/watch?v=YOUR_STREAM_ID
+      - VIEWER_COUNT=10
+      - MAX_DURATION_MINUTES=0  # 0 = unlimited
+      - RESTART_INTERVAL_HOURS=6
+    volumes:
+      - ./logs:/app/logs
+      - ./chrome_profiles:/app/chrome_profiles
+    shm_size: 2gb  # Increase shared memory for Chrome
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+        reservations:
+          memory: 2G
+          cpus: '1.0'
