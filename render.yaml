@@ -5,13 +5,15 @@ services:
     region: oregon
     plan: free
     buildCommand: |
-      pip install -r requirements.txt
-      # Install Chrome dependencies for Render
-      apt-get update && apt-get install -y wget gnupg
+      apt-get update && apt-get install -y wget gnupg curl unzip xvfb
       wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
       echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
       apt-get update && apt-get install -y google-chrome-stable
-    startCommand: python main.py
+      pip install --no-cache-dir -r requirements.txt
+    startCommand: |
+      export DISPLAY=:99
+      Xvfb :99 -screen 0 1024x768x24 & 
+      python main.py
     envVars:
       - key: BOT_MODE
         value: LIVE
