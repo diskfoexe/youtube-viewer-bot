@@ -11,3 +11,6 @@ apt-get install -y ./google-chrome-stable_current_amd64.deb
 rm google-chrome-stable_current_amd64.deb
 
 echo "✅ Chrome installed."
+echo "🔍 Checking Chrome installation..."
+which google-chrome || echo "❌ google-chrome not found"
+google-chrome --version || echo "❌ google-chrome not available"
