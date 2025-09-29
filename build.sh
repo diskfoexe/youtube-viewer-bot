@@ -1,16 +1,22 @@
 #!/usr/bin/env bash
+# exit on error
+set -o errexit
 
-# Exit on error
-set -e
+STORAGE_DIR=/opt/render/project/.render
 
-echo "Installing Google Chrome..."
+if [[ ! -d $STORAGE_DIR/chrome ]]; then
+  echo "...Downloading Chrome"
+  mkdir -p $STORAGE_DIR/chrome
+  cd $STORAGE_DIR/chrome
+  wget -P ./ https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  dpkg -x ./google-chrome-stable_current_amd64.deb $STORAGE_DIR/chrome
+  rm ./google-chrome-stable_current_amd64.deb
+  cd $HOME/project/src # Make sure we return to where we were
+else
+  echo "...Using Chrome from cache"
+fi
 
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-apt-get update
-apt-get install -y ./google-chrome-stable_current_amd64.deb
-rm google-chrome-stable_current_amd64.deb
+# be sure to add Chromes location to the PATH as part of your Start Command
+# export PATH="${PATH}:/opt/render/project/.render/chrome/opt/google/chrome"
 
-echo "✅ Chrome installed."
-echo "🔍 Checking Chrome installation..."
-which google-chrome || echo "❌ google-chrome not found"
-google-chrome --version || echo "❌ google-chrome not available"
+# add your own build commands...
