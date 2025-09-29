@@ -4,6 +4,7 @@ from selenium_driverless import webdriver
 from selenium_driverless.types.by import By
 from selenium_driverless.types.webelement import WebElement
 import time
+import os
 
 class YouTubeViewer:
     def __init__(self):
@@ -12,16 +13,26 @@ class YouTubeViewer:
     async def setup_browser(self):
         """Initialize the driverless browser with stealth settings"""
         options = webdriver.ChromeOptions()
-        
-        # Safe stealth settings (removed all problematic flags)
+
+        # Required arguments for headless, sandboxed environments like Render
+        options.add_argument("--headless=new")  # Use new headless mode
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--disable-infobars")
+        options.add_argument("--disable-extensions")
+        options.add_argument("--disable-plugins-discovery")
+        options.add_argument("--remote-debugging-port=9222")  # Optional but helps with some setups
         options.add_argument("--no-first-run")
         options.add_argument("--disable-infobars")
-        options.add_argument("--disable-extensions-except")
-        options.add_argument("--disable-plugins-discovery")
         
-        # Use real user profile (optional - comment out if you don't want to use your profile)
-        # options.add_argument("--user-data-dir=C:/Users/YourUsername/AppData/Local/Google/Chrome/User Data")
-        
+        # Use the manually downloaded Chrome binary path from your render-build.sh
+        chrome_binary_path = "/opt/render/project/.render/chrome/opt/google/chrome/google-chrome"
+        if not os.path.exists(chrome_binary_path):
+            raise FileNotFoundError(f"Chrome binary not found at {chrome_binary_path}")
+        options.binary_location = chrome_binary_path
+
+        # Initialize the browser
         self.driver = await webdriver.Chrome(options=options)
         
     async def human_delay(self, min_seconds=1, max_seconds=3):
