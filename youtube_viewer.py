@@ -33,7 +33,7 @@ class YouTubeViewer:
         options.binary_location = chrome_binary_path
 
         # Initialize the browser
-        self.driver = await webdriver.Chrome(options=options, connect_timeout=60)
+        self.driver = await webdriver.Chrome(options=options)
         
     async def human_delay(self, min_seconds=1, max_seconds=3):
         """Add human-like random delays"""
