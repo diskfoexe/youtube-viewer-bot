@@ -178,7 +178,7 @@ class YouTubeViewer:
         try:
             # Navigate to video
             await self.driver.get(video_url)
-            await self.human_delay(5, 8)
+            await self.human_delay(20, 30)
             # Handle cookie consent if it appears
             try:
                 # Try multiple cookie button selectors
